@@ -71,9 +71,6 @@ class Commune(models.Model):
         elif insee_code =="88034":
             #same as above
             insee_code = "88106"
-        elif insee_code == "26383":
-            #maybe error in presendial 2007 election file ?
-            insee_code = "26020" 
         elif insee_code in ["59540", "59248"]:
             #attached to dunkerque in 2010
             raise RemovedCommuneError(insee_code, 2010)
