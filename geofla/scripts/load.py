@@ -43,25 +43,6 @@ def load_adminzones():
     # no region at the moment
     #lm = LayerMapping(Region, '/Users/fmassot/Downloads/GEOFLA_1-1_SHP_LAMB93_FR-ED111/DEPARTEMENTS/DEPARTEMENT.SHP', department_mapping)
 
-def add_paris_and_marseille_commune():
-    arr_paris = Commune.objects.filter(name__contains="ARRONDISSEMENT").filter(name__contains="PARIS").values_list('geom', flat=True) 
-    paris_geom = arr_paris[0]
-    for poly in arr_paris[1:]:
-       paris_geom = paris_geom.union(poly)
-
-    paris = Commune(name="PARIS", insee_code="75056", geom=MultiPolygon(paris_geom), code="056", state="")
-    paris.save()
-
-    arr_marseille = Commune.objects.filter(name__contains="ARRONDISSEMENT").filter(name__contains="MARSEILLE").values_list('geom', flat=True) 
-
-    marseille_geom = arr_marseille[0]
-    for poly in arr_marseille[1:]:
-        marseille_geom = marseille_geom.union(poly)
-
-    marseille = Commune(name="MARSEILLE", insee_code="13055", geom=MultiPolygon(marseille_geom), code="055", state="")
-    marseille.save()
-
-
 def add_commune(name, insee_code):
     arrs = Commune.objects.filter(name__contains="ARRONDISSEMENT").filter(name__contains=name).values_list('geom', flat=True) 
 
