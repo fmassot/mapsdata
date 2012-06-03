@@ -264,7 +264,7 @@ def commune_extractor(info_commune):
         insee_code = '%s%03d'%(info_commune['dept_code'], info_commune['commune_code'])
     real_insee_code = Commune.get_insee_code(insee_code)
     info_commune['insee_code'] = real_insee_code
-    return Commune.objects.get(insee_code=insee_code)
+    return Commune.objects.get(insee_code=real_insee_code)
       
 
 if __name__ == '__main__':
