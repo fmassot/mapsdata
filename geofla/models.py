@@ -77,6 +77,8 @@ class Commune(models.Model):
         elif insee_code in ["21551", "61022", "81107"]:
             #these communes were removed in 2009/2010/2007
             raise RemovedCommuneError(insee_code, 2010)
+        elif insee_code in ["01003"]:
+            raise RemovedCommuneError(insee_code, 1974)
         elif insee_code in ["52033", "52124", "52266", "52278", "52465"]:
             #communes added in 2012
             raise NotYetImportedCommuneError(insee_code)
@@ -84,4 +86,15 @@ class Commune(models.Model):
             #DOM/TOM results are not imported
             raise NotYetImportedCommuneError(insee_code)
         return insee_code
+
+
+def get_commune(dept_code, commune_code):
+    try:
+        insee_code = '%02d%03d'%(dept_code, commune_code)
+    except TypeError:
+        #the dept_code is a string not an integer: for corse, DOM/TOM
+        insee_code = '%s%03d'%(dept_code, commune_code)
+    real_insee_code = Commune.get_insee_code(insee_code)
+    return Commune.objects.get(insee_code=real_insee_code)
+ 
 

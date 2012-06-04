@@ -65,17 +65,6 @@ POLITICIAN_PARTY = {
     u'BESANCENOT': 'LCR',
 }
 
-def commune_extractor(info_commune):
-    try:
-        insee_code = '%02d%03d'%(info_commune['dept_code'], info_commune['commune_code'])
-    except TypeError:
-        #the dept_code is a string not an integer: for corse, DOM/TOM
-        insee_code = '%s%03d'%(info_commune['dept_code'], info_commune['commune_code'])
-    real_insee_code = Commune.get_insee_code(insee_code)
-    info_commune['insee_code'] = real_insee_code
-    return Commune.objects.get(insee_code=real_insee_code)
- 
-
 class ResultBuilder(object):
     """
     """
@@ -94,7 +83,7 @@ class ResultBuilder(object):
         for row_info in rows_info:
             try:
                 try:
-                    commune = commune_extractor(row_info['commune'])
+                    commune = get_commune(row_info['commune']['dept_code'], row_info['commune']['dept_code'])
                 except (RemovedCommuneError, NotYetImportedCommuneError):
                     # in this case, we can't process the data
                     #print "Commune not yet imported, insee code: %s"%row_info['commune']['insee_code']
